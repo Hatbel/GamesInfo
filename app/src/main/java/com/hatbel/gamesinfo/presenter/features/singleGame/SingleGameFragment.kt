@@ -1,17 +1,21 @@
 package com.hatbel.gamesinfo.presenter.features.singleGame
 
+import android.app.Dialog
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.hatbel.gamesinfo.R
+import com.hatbel.gamesinfo.databinding.DialogErrorBinding
 import com.hatbel.gamesinfo.databinding.FragmentSingleGameBinding
+import com.hatbel.gamesinfo.presenter.features.error.ErrorDialog
 import com.hatbel.gamesinfo.presenter.features.gamesList.FragmentListViewModel
 import com.hatbel.gamesinfo.presenter.wrappers.BaseFragment
 import kotlinx.coroutines.launch
@@ -52,6 +56,13 @@ class SingleGameFragment : BaseFragment() {
         lifecycleScope.launch {
             gamesViewModel.loader.observe(viewLifecycleOwner) { loader ->
                 handle(loader)
+            }
+        }
+        lifecycleScope.launch {
+            gamesViewModel.error.observe(viewLifecycleOwner) { error ->
+                if(error.isNotEmpty())
+                    ErrorDialog(message = error
+                    ).show(requireActivity().supportFragmentManager, "YesNoDialog")
             }
         }
         lifecycleScope.launch {

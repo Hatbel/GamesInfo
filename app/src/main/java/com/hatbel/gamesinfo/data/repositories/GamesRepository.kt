@@ -37,7 +37,7 @@ interface GamesRepository {
                 val response = apiService.getGameById(id).body()
                 response?.let{ResponseResult.Success(it)} ?: ResponseResult.Error("object is null")
             } catch (e: Exception){
-                ResponseResult.Error(e.message.toString())
+                ResponseResult.Error("Oopss... Something went wrong")
             }
         }
     }
